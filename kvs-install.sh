@@ -227,7 +227,7 @@ function installQuestions() {
 
 function aptupdate() {
   if [[ "$OS" =~ (debian|ubuntu) ]]; then
-    sudo apt-get update
+    apt-get update
   fi
 }
 
@@ -250,7 +250,7 @@ function aptinstall() {
       memcached
       git
     )
-    sudo apt-get -y install "${packages[@]}"
+    apt-get -y install "${packages[@]}"
   fi
 }
 
@@ -278,26 +278,26 @@ function whatisdomain() {
 function aptinstall_nginx() {
   if [[ "$OS" =~ (debian|ubuntu) ]]; then
     echo "NGINX Installation"
-    apt-key adv --fetch-keys 'http://nginx.org/keys/nginx_signing.key'
+    apt-key adv --fetch-keys 'https://nginx.org/keys/nginx_signing.key'
     if [[ "$VERSION_ID" =~ (11|12|20.04|22.04) ]]; then
-      echo "deb http://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
-      echo "deb-src http://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
-      sudo apt-get update && sudo apt-get install nginx -y
+      echo "deb https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
+      echo "deb-src https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
+      apt-get update && apt-get install nginx -y
       rm -rf conf.d && mkdir -p /etc/nginx/globals
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/nginx.conf -O /etc/nginx/nginx.conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/general.conf -O /etc/nginx/globals/general.conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/security.conf -O /etc/nginx/globals/security.conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/php_fastcgi.conf -O /etc/nginx/globals/php_fastcgi.conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/letsencrypt.conf -O /etc/nginx/globals/letsencrypt.conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/cloudflare-ip-list.conf -O /etc/nginx/globals/cloudflare-ip-list.conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/kvs.conf -O /etc/nginx/globals/kvs.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/nginx.conf -O /etc/nginx/nginx.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/general.conf -O /etc/nginx/globals/general.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/security.conf -O /etc/nginx/globals/security.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/php_fastcgi.conf -O /etc/nginx/globals/php_fastcgi.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/letsencrypt.conf -O /etc/nginx/globals/letsencrypt.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/cloudflare-ip-list.conf -O /etc/nginx/globals/cloudflare-ip-list.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/kvs.conf -O /etc/nginx/globals/kvs.conf
       openssl dhparam -out /etc/nginx/dhparam.pem 2048
       mkdir /etc/nginx/sites-available /etc/nginx/sites-enabled
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/domain.conf -O /etc/nginx/sites-available/"$DOMAIN".conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/domain.conf -O /etc/nginx/sites-available/"$DOMAIN".conf
       sed -i "s/domain.tld/$DOMAIN/g" /etc/nginx/sites-available/"$DOMAIN".conf
       sed -i "s/project_url/$URL/g" /etc/nginx/sites-available/"$DOMAIN".conf
       # wget sslgen conf
-      wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/sslgen.conf -O /etc/nginx/sites-enabled/sslgen.conf
+      wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/sslgen.conf -O /etc/nginx/sites-enabled/sslgen.conf
       sed -i "s/domain.tld/$DOMAIN/g" /etc/nginx/sites-enabled/sslgen.conf
       sed -i "s/project_url/$URL/g" /etc/nginx/sites-enabled/sslgen.conf
       ##
@@ -305,7 +305,7 @@ function aptinstall_nginx() {
       rm -rf /etc/nginx/conf.d
       service nginx restart
       #update CF IPV4/V6 if CF is used
-      #wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/update-cloudflare-ip-list.sh -O /usr/bin/update-cloudflare-ip-list.sh
+      #wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/update-cloudflare-ip-list.sh -O /usr/bin/update-cloudflare-ip-list.sh
     fi
   fi
 }
@@ -314,8 +314,8 @@ function aptinstall_mariadb() {
   echo "MariaDB Installation"
   if [[ "$OS" =~ (debian|ubuntu) ]]; then
     apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
-    echo "deb [arch=amd64] https://dlm.mariadb.com/repo/mariadb-server/$database_ver/repo/$ID $(lsb_release -sc) main" >/etc/apt/sources.list.d/mariadb.list
-    sudo apt-get update && sudo apt-get install mariadb-server -y
+    echo "deb [arch=amd64] http://mariadb.mirror.globo.tech/repo/$database_ver/$ID $(lsb_release -sc) main" >/etc/apt/sources.list.d/mariadb.list
+    apt-get update && apt-get install mariadb-server -y
     systemctl enable mariadb && systemctl start mariadb
   fi
 }
@@ -332,7 +332,7 @@ function aptinstall_php() {
         add-apt-repository -y ppa:ondrej/php
       fi
     fi
-    sudo apt-get update && sudo apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm,-imagick,-memcached} -y
+    apt-get update && apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm,-imagick,-memcached} -y
     sed -i "s|upload_max_filesize = 2M|upload_max_filesize = 2048M|
                 s|post_max_size = 8M|post_max_size = 2048M|
                 s|memory_limit = 128M|memory_limit = 512M|
@@ -358,10 +358,10 @@ function aptinstall_phpmyadmin() {
     chmod 700 /usr/share/phpmyadmin/tmp
     randomBlowfishSecret=$(openssl rand -base64 22)
     sed -e "s|cfg\['blowfish_secret'\] = ''|cfg['blowfish_secret'] = '$randomBlowfishSecret'|" /usr/share/phpmyadmin/config.sample.inc.php >/usr/share/phpmyadmin/config.inc.php
-    wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/phpmyadmin.conf
+    wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/phpmyadmin.conf
     ln -s /usr/share/phpmyadmin /var/www/phpmyadmin
     if [[ "$webserver" =~ (nginx) ]]; then
-      sudo apt-get update && sudo apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm} -y
+      apt-get update && apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm} -y
       service nginx restart
     fi
   fi
@@ -451,7 +451,7 @@ function install_ioncube() {
 
 function autoUpdate() {
   if [[ "$AUTOPACKAGEUPDATE" =~ (YES) ]]; then
-    sudo apt-get install -y unattended-upgrades
+    apt-get install -y unattended-upgrades
     sed -i 's|APT::Periodic::Update-Package-Lists "0";|APT::Periodic::Update-Package-Lists "1";|' /etc/apt/apt.conf.d/20auto-upgrades
     sed -i 's|APT::Periodic::Unattended-Upgrade "0";|APT::Periodic::Unattended-Upgrade "1";|' /etc/apt/apt.conf.d/20auto-upgrades
   fi
@@ -517,7 +517,7 @@ function manageMenu() {
 }
 
 function update() {
-  wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/kvs-install.sh -O kvs-install.sh
+  wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/kvs-install.sh -O kvs-install.sh
   chmod +x kvs-install.sh
   echo ""
   echo "Update Done."
