@@ -227,7 +227,7 @@ function installQuestions() {
 
 function aptupdate() {
   if [[ "$OS" =~ (debian|ubuntu) ]]; then
-    apt-get update
+    sudo apt-get update
   fi
 }
 
@@ -250,7 +250,7 @@ function aptinstall() {
       memcached
       git
     )
-    apt-get -y install "${packages[@]}"
+    sudo apt-get -y install "${packages[@]}"
   fi
 }
 
@@ -282,7 +282,7 @@ function aptinstall_nginx() {
     if [[ "$VERSION_ID" =~ (11|12|20.04|22.04) ]]; then
       echo "deb https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
       echo "deb-src https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
-      apt-get update && apt-get install nginx -y
+      sudo apt-get update && sudo apt-get install nginx -y
       rm -rf conf.d && mkdir -p /etc/nginx/globals
       wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/nginx.conf -O /etc/nginx/nginx.conf
       wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/general.conf -O /etc/nginx/globals/general.conf
@@ -315,7 +315,7 @@ function aptinstall_mariadb() {
   if [[ "$OS" =~ (debian|ubuntu) ]]; then
     apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
     echo "deb [arch=amd64] https://dlm.mariadb.com/repo/mariadb-server/$database_ver/repo/$ID $(lsb_release -sc) main" >/etc/apt/sources.list.d/mariadb.list
-    apt-get update && apt-get install mariadb-server -y
+    sudo apt-get update && sudo apt-get install mariadb-server -y
     systemctl enable mariadb && systemctl start mariadb
   fi
 }
@@ -332,7 +332,7 @@ function aptinstall_php() {
         add-apt-repository -y ppa:ondrej/php
       fi
     fi
-    apt-get update && apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm,-imagick,-memcached} -y
+    sudo apt-get update && sudo apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm,-imagick,-memcached} -y
     sed -i "s|upload_max_filesize = 2M|upload_max_filesize = 2048M|
                 s|post_max_size = 8M|post_max_size = 2048M|
                 s|memory_limit = 128M|memory_limit = 512M|
@@ -361,7 +361,7 @@ function aptinstall_phpmyadmin() {
     wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/phpmyadmin.conf
     ln -s /usr/share/phpmyadmin /var/www/phpmyadmin
     if [[ "$webserver" =~ (nginx) ]]; then
-      apt-get update && apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm} -y
+      sudo apt-get update && sudo apt-get install php"$PHP"{,-bcmath,-mbstring,-common,-xml,-curl,-gd,-zip,-mysql,-fpm} -y
       service nginx restart
     fi
   fi
@@ -451,7 +451,7 @@ function install_ioncube() {
 
 function autoUpdate() {
   if [[ "$AUTOPACKAGEUPDATE" =~ (YES) ]]; then
-    apt-get install -y unattended-upgrades
+    sudo apt-get install -y unattended-upgrades
     sed -i 's|APT::Periodic::Update-Package-Lists "0";|APT::Periodic::Update-Package-Lists "1";|' /etc/apt/apt.conf.d/20auto-upgrades
     sed -i 's|APT::Periodic::Unattended-Upgrade "0";|APT::Periodic::Unattended-Upgrade "1";|' /etc/apt/apt.conf.d/20auto-upgrades
   fi
