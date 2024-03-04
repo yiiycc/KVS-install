@@ -226,13 +226,13 @@ function installQuestions() {
 }
 
 function aptupdate() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     apt-get update
   fi
 }
 
 function aptinstall() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     packages=(
       ca-certificates
       apt-transport-https
@@ -276,12 +276,12 @@ function whatisdomain() {
 }
 
 function aptinstall_nginx() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     echo "NGINX Installation"
     apt-key adv --fetch-keys 'https://nginx.org/keys/nginx_signing.key'
     if [[ "$VERSION_ID" =~ (11|12|20.04|22.04) ]]; then
-      echo "deb https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
-      echo "deb-src https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
+      echo "deb https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
+      echo "deb-src https://nginx.org/packages/mainline/ubuntu/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
       apt-get update && apt-get install nginx -y
       rm -rf conf.d && mkdir -p /etc/nginx/globals
       wget https://raw.githubusercontent.com/yiiycc/KVS-install/main/conf/nginx/nginx.conf -O /etc/nginx/nginx.conf
@@ -312,7 +312,7 @@ function aptinstall_nginx() {
 
 function aptinstall_mariadb() {
   echo "MariaDB Installation"
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     apt-key adv --fetch-keys 'https://mariadb.org/mariadb_release_signing_key.asc'
     echo "deb [arch=amd64] http://mariadb.mirror.globo.tech/repo/$database_ver/$ID $(lsb_release -sc) main" >/etc/apt/sources.list.d/mariadb.list
     apt-get update && apt-get install mariadb-server -y
@@ -321,7 +321,7 @@ function aptinstall_mariadb() {
 }
 
 function aptinstall_php() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     echo "PHP Installation"
     curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
     if [[ "$webserver" =~ (nginx) ]]; then
@@ -345,7 +345,7 @@ function aptinstall_php() {
 
 function aptinstall_phpmyadmin() {
   echo "phpMyAdmin Installation"
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     INSTALL_DIR="/usr/share/phpmyadmin"
     PHPMYADMIN_DOWNLOAD_PAGE="https://www.phpmyadmin.net/downloads/"
     PHPMYADMIN_URL=$(curl -s "${PHPMYADMIN_DOWNLOAD_PAGE}" | grep -oP 'https://files.phpmyadmin.net/phpMyAdmin/[^"]+-all-languages.tar.gz' | head -n 1)
@@ -368,7 +368,7 @@ function aptinstall_phpmyadmin() {
 }
 
 function install_KVS() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     KVS_PATH="/var/www/$DOMAIN"
     mkdir -p "$KVS_PATH"
     mv /root/KVS_* "$KVS_PATH"
@@ -398,7 +398,7 @@ function install_KVS() {
 }
 
 function install_acme.sh() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     cd /root || exit
     git clone https://github.com/acmesh-official/acme.sh.git
     cd ./acme.sh || exit
@@ -436,7 +436,7 @@ insert_cronjob() {
 
 function install_ioncube() {
   if [[ "$IONCUBE" =~ (YES) ]]; then
-    if [[ "$OS" =~ (debian|ubuntu) ]]; then
+    if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
       cd /root || exit
       wget 'https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz'
       tar -xvzf ioncube_loaders_lin_x86-64.tar.gz
@@ -527,7 +527,7 @@ function update() {
 }
 
 function updatephpMyAdmin() {
-  if [[ "$OS" =~ (debian|ubuntu) ]]; then
+  if [[ "ubuntu" =~ (debian|ubuntu) ]]; then
     rm -rf /usr/share/phpmyadmin/*
     INSTALL_DIR="/usr/share/phpmyadmin"
     PHPMYADMIN_DOWNLOAD_PAGE="https://www.phpmyadmin.net/downloads/"
