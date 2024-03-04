@@ -94,9 +94,9 @@ function script() {
   aptinstall_mariadb
   aptinstall_phpmyadmin
   install_KVS
-  install_ioncube
+  #install_ioncube
   insert_cronjob
-  install_acme.sh
+  #install_acme.sh
   autoUpdate
   setupdone
 
@@ -468,7 +468,7 @@ function setupdone() {
     echo "IPV6 : $IPV6"
   fi
   echo "${cyan}Website: ${green}https://$URL"
-  echo "${cyan}phpMyAdmin: ${green}http://$IP/phpmyadmin"
+  echo "${cyan}phpMyAdmin: ${green}http://$IPV4/phpmyadmin"
   echo "${cyan}Database: ${green}$DOMAIN"
   echo "${cyan}User: ${green}$DOMAIN"
   echo "${cyan}Password: ${green}$databasepassword"
