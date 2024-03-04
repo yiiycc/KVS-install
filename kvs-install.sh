@@ -6,7 +6,7 @@
 # URL : https://www.kernel-video-sharing.com
 #
 # This script is intended for a quick and easy installation :
-# bash <(curl -s https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/kvs-install.sh)
+# bash <(curl -s https://raw.githubusercontent.com/yiiycc/KVS-install/main/kvs-install.sh)
 #
 # KVS-install Copyright (c) 2020-2023 Maxime Michaud
 # Licensed under GNU General Public License v3.0
@@ -278,10 +278,10 @@ function whatisdomain() {
 function aptinstall_nginx() {
   if [[ "$OS" =~ (debian|ubuntu) ]]; then
     echo "NGINX Installation"
-    apt-key adv --fetch-keys 'https://nginx.org/keys/nginx_signing.key'
+    apt-key adv --fetch-keys 'http://nginx.org/keys/nginx_signing.key'
     if [[ "$VERSION_ID" =~ (11|12|20.04|22.04) ]]; then
-      echo "deb https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
-      echo "deb-src https://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
+      echo "deb http://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >/etc/apt/sources.list.d/nginx.list
+      echo "deb-src http://nginx.org/packages/mainline/$OS/ $(lsb_release -sc) nginx" >>/etc/apt/sources.list.d/nginx.list
       sudo apt-get update && sudo apt-get install nginx -y
       rm -rf conf.d && mkdir -p /etc/nginx/globals
       wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/conf/nginx/nginx.conf -O /etc/nginx/nginx.conf
