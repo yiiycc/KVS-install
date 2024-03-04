@@ -8,13 +8,13 @@
 ## Usage
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/kvs-install.sh)
+bash <(curl -s https://github.com/yiiycc/KVS-install/blob/main/kvs-install.sh)
 ```
 
 ## Headless Usage
 
 ```bash
-wget https://raw.githubusercontent.com/MaximeMichaud/KVS-install/main/kvs-install.sh
+wget https://github.com/yiiycc/KVS-install/blob/main/kvs-install.sh
 chmod +x kvs-install.sh
 HEADLESS=y \
 database_ver=10.11 \
